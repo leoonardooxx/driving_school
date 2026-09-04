@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 class PaymentController
 {
     /**
-     * Display a listing of the resource.
+     * Mostra todos os pagamentos
      */
     public function index()
     {
-        //
+        $payments = Payment::all();
+
+        if (!$payments) {
+            return response()->json([
+                'error' => 404,
+                'message' => 'Payments not found.'
+            ], 404);
+        }
+        
+        return $payments;
     }
 
 

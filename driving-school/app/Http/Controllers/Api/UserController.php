@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 class UserController
 {
     /**
-     * Display a listing of the resource.
+     * Mostra todos os utilizadores
      */
     public function index()
     {
-        //
+         $users = User::all();
+
+        if (!$users) {
+            return response()->json([
+                'error' => 404,
+                'message' => 'Users not found.'
+            ], 404);
+        }
+        
+        return $users;
     }
 
     /**

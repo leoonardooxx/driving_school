@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 class VehicleController
 {
     /**
-     * Display a listing of the resource.
+     *  Mostra todos os veículos
      */
     public function index()
     {
-        //
+        $vehicles = Vehicle::all();
+
+        if (!$vehicles) {
+            return response()->json([
+                'error' => 404,
+                'message' => 'Vehicles not found.'
+            ], 404);
+        }
+        
+        return $vehicles;
     }
 
     /**

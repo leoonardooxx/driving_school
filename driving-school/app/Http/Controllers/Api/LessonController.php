@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 class LessonController
 {
     /**
-     * Display a listing of the resource.
+     * Mostra todas as aulas
      */
     public function index()
     {
-        //
+        $lessons = Lesson::all();
+
+        if (!$lessons) {
+            return response()->json([
+                'error' => 404,
+                'message' => 'Lessons not found.'
+            ], 404);
+        }
+
+        return $lessons;
     }
 
 
