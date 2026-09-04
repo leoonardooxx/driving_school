@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
 
-class PaymentController 
+class PaymentController
 {
     /**
      * Display a listing of the resource.
@@ -15,34 +16,11 @@ class PaymentController
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
     {
         //
     }

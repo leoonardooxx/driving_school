@@ -15,13 +15,7 @@ class InstructorCategoryController
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -31,21 +25,6 @@ class InstructorCategoryController
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(InstructorCategory $instructorCategory)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(InstructorCategory $instructorCategory)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

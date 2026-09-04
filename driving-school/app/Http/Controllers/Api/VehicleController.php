@@ -6,7 +6,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
-class VehicleController  
+class VehicleController
+{
     /**
      * Display a listing of the resource.
      */

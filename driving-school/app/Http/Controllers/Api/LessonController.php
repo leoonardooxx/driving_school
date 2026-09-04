@@ -16,13 +16,7 @@ class LessonController
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -32,21 +26,6 @@ class LessonController
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Lesson $lesson)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Lesson $lesson)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
