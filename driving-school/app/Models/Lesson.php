@@ -10,6 +10,7 @@ class Lesson extends Model
         'start_date',
         'end_date',
         'type',
+        'active',
         'instructor_id',
         'vehicle_id'
     ];

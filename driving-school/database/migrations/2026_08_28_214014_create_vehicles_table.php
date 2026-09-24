@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('transmission_type', ['MANUAL', 'AUTOMATIC']);
             $table->enum('fuel_type', ['PETROL', 'DIESEL', 'ELETRIC', 'HYBRID', 'LPG']);
             $table->string('photo');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('type', ['teoric', 'pratical']);
+            $table->boolean('active')->default(false);
             $table->foreignId('instructor_id');
             $table->foreignId('vehicle_id')->nullable();
             $table->timestamps();

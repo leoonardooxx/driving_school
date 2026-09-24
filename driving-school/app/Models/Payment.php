@@ -10,6 +10,7 @@ class Payment extends Model
         'quantity',
         'payed_date',
         'expiration_date',
+        'active',
         'status',
         'reference',
         'notes',

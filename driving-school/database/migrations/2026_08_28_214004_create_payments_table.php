@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('reference');
             $table->string('notes');
             $table->foreignId('user_id');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

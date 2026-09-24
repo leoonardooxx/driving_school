@@ -1,27 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="{{url('register')}}" method="POST">
+@extends('layouts.app')
+
+@section('body')
+    <form action="{{ url('register') }}" method="POST" class="gap-4 flex flex-col">
         @csrf
-        <input type="text" name="name" placeholder="Name">
-        <input type="text" name="last_name" placeholder="last_name">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="text" name="profile" placeholder="profile">
-        <input type="text" name="nif" placeholder="nif">
-        
+        <x-input name="name" label="Nome"/>
+        {{-- <input type="text" name="name" placeholder="Name"> --}}
+        <x-input type="text" name="last_name" label="Sobrenome"/>
+        <x-input type="email" name="email" label="Email"/>
+        <x-input type="password" name="password" label="Palavra-passe"/>
+        <x-input type="text" name="profile" label="Perfil"/>
+        <x-input type="text" name="nif" label="NIF"/>
+
         <button type="submit">Register</button>
     </form>
-    
-    @foreach($errors->all() as $error)
-    <div>
-        {{$error}}
-    </div>
+
+    @foreach ($errors->all() as $error)
+        <div>
+            {{ $error }}
+        </div>
     @endforeach
-</body>
-</html>
+@endsection
