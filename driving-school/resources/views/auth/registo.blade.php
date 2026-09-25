@@ -3,15 +3,15 @@
 @section('body')
     <form action="{{ url('register') }}" method="POST" class="gap-4 flex flex-col">
         @csrf
-        <x-input name="name" label="Nome"/>
+        <x-input name="name" label="Nome" theme="light" />
         {{-- <input type="text" name="name" placeholder="Name"> --}}
-        <x-input type="text" name="last_name" label="Sobrenome"/>
-        <x-input type="email" name="email" label="Email"/>
-        <x-input type="password" name="password" label="Palavra-passe"/>
-        <x-input type="text" name="profile" label="Perfil"/>
-        <x-input type="text" name="nif" label="NIF"/>
+        <x-input type="text" name="last_name" label="Sobrenome" theme="light" />
+        <x-input type="email" name="email" label="Email" theme="light" />
+        <x-input type="password" name="password" label="Palavra-passe" theme="light" />
+        <x-input type="text" name="profile" label="Perfil" theme="light" />
+        <x-input type="text" name="nif" label="NIF" theme="light" />
 
-        <button type="submit">Register</button>
+        <x-button type="submit">Register</x-button>
     </form>
 
     @foreach ($errors->all() as $error)

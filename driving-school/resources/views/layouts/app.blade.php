@@ -12,7 +12,7 @@
     @stack('styles')
 </head>
 
-<body class="p-3">
+<body class="p-3 h-full h-screen">
     @yield('body')
 </body>
 
