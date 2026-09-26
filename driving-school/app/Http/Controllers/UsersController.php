@@ -7,12 +7,28 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+    private function getAllUsers()
+    {
+        return User::paginate(min(max((int) request()->cookie('per_page', 10), 1), 100));
+    }
+    private function fieldsLabel()
+    {
+        return [
+            'name' => ['label' => 'Name'],
+            'last_name' => ['label' => 'Surname'],
+            'active' => ['label' => 'Active', 'component' => 'switch'],
+            'created_at' => ['label' => 'Created at'],
+            'updated_at' => ['label' => 'Updated at'],
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $header = self::fieldsLabel();
+        $users = self::getAllUsers();
+        return view('users.index', ['header' => $header, 'users' => $users]);
     }
 
     /**

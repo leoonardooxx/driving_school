@@ -1,10 +1,12 @@
 @props([
     'route' => null,
+    'href' => null,
     'label' => null,
     'icon' => null,
     'theme' => 'black',
     'color' => 'normal',
     'dropdown' => [],
+    'disabled' => false,
 ])
 
 @php
@@ -34,11 +36,12 @@
     $classes =
         'h-11 flex justify-center items-center gap-2 rounded-full backdrop-blur-md border transition ' .
         ($label ? 'px-4 ' : 'w-11 ') .
-        ($active ? $activeThemes[$theme] : $themes[$theme]);
+        ($active ? $activeThemes[$theme] : $themes[$theme]) .
+        ($disabled ? ' brightness-75 opacity-60 cursor-not-allowed' : '');
 @endphp
 
-@if ($route && ! $dropdown)
-    <a href="{{ route($route) }}" @if ($active) aria-current="page" @endif {{ $attributes->merge(['class' => $classes]) }}>
+@if (($route || $href) && ! $dropdown && ! $disabled)
+    <a href="{{ $href ?? route($route) }}" @if ($active) aria-current="page" @endif {{ $attributes->merge(['class' => $classes]) }}>
         @if ($slot->isNotEmpty())
             {{ $slot }}
         @else
@@ -51,7 +54,7 @@
         @endif
     </a>
 @else
-    <button type="button" @if ($dropdown) popovertarget="{{ $dropdownId }}" style="anchor-name: --{{ $dropdownId }}" @endif {{ $attributes->merge(['class' => $classes]) }}>
+    <button type="button" @disabled($disabled) @if ($dropdown && ! $disabled) popovertarget="{{ $dropdownId }}" style="anchor-name: --{{ $dropdownId }}" @endif {{ $attributes->merge(['class' => $classes]) }}>
         @if ($slot->isNotEmpty())
             {{ $slot }}
         @else

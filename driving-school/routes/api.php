@@ -9,11 +9,13 @@ use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::name('api.')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::apiResource('category', CategoryController::class);
-Route::post('category/{category}', [CategoryController::class, 'update'])->name('category.update.multipart');
-Route::apiResource('lessons', LessonController::class);
-Route::apiResource('payments', PaymentController::class);
-Route::apiResource('users', UserController::class);
-Route::apiResource('vehicles', VehicleController::class);
+    Route::apiResource('category', CategoryController::class);
+    Route::post('category/{category}', [CategoryController::class, 'update'])->name('category.update.multipart');
+    Route::apiResource('lessons', LessonController::class);
+    Route::apiResource('payments', PaymentController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('vehicles', VehicleController::class);
+});

@@ -4,11 +4,11 @@
     </div>
     <div id="center" class="mx-auto flex gap-2">
         <x-layout.button theme="white" label="Dashboard" route="dashboard" />
-        <x-layout.button theme="white" label="Categories" :dropdown="[
+        <x-layout.button theme="white" label="Categories" icon="lucide-package" :dropdown="[
             ['label' => 'See all', 'route' => 'categories.index', 'icon' => 'lucide-eye'],
             ['label' => 'New category', 'route' => 'categories.create', 'icon' => 'lucide-plus'],
         ]" />
-        <x-layout.button theme="white" label="Users" :dropdown="[
+        <x-layout.button theme="white" label="Users" icon="lucide-user" :dropdown="[
             ['label' => 'See all', 'route' => 'users.index', 'icon' => 'lucide-eye'],
             ['label' => 'New user', 'route' => 'users.create', 'icon' => 'lucide-plus'],
         ]" />

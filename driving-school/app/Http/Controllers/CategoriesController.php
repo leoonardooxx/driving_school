@@ -10,12 +10,11 @@ class CategoriesController extends Controller
 {
     private function getAllCategories()
     {
-        return Category::all();
+        return Category::paginate(min(max((int) request()->cookie('per_page', 10), 1), 100));
     }
     private function fieldsLabel()
     {
         return [
-            'image' => ['label' => 'Imagem'],
             'image' => ['label' => 'Image', 'component' => 'table.image'],
             'code' => ['label' => 'Code'],
             'description' => ['label' => 'Description'],

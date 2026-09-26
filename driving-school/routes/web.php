@@ -24,7 +24,7 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('/login', function () {
         return view('auth.login');
-    });
+    })->name('login');
 
 
     Route::post('/login', function (LoginRequest $request) {
@@ -62,7 +62,7 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/categories', CategoriesController::class);
-    Route::resource('/users', UsersController::class);
+    Route::resource('users', UsersController::class);
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();
