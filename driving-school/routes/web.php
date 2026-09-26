@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsersController;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -47,7 +49,7 @@ Route::middleware(['guest'])->group(function () {
             'email' => 'required|email|',
             'name' => 'required|string|min:8|max:20',
             'password' => ['required', Password::defaults()],
-            'last_name' => 'required|string|min:8|max:20',
+            'last_name' => 'required|string|max:20',
             'profile' => ['required', Rule::in(['admin', 'student', 'instructor'])],
             'nif' => 'required|digits:9',
         ]);
@@ -59,4 +61,13 @@ Route::middleware(['guest'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/categories', CategoriesController::class);
+    Route::resource('/users', UsersController::class);
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    })->name('auth.logout');
 });

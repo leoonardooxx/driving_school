@@ -3,12 +3,12 @@
 @section('body')
     {{-- action="{{ url('register') }}" --}}
     <main class="flex w-full h-full">
-        <img src="{{ asset('carro_login.png') }}" alt="{{ __('') }}" class="w-1/2 grow object-contain rounded-2xl lg:block hidden"  />
+        <img src="{{ asset('carro_login.png') }}" alt="{{ __('') }}" class="w-1/2 grow object-contain rounded-2xl" />
 
-        <div class="w-full h-full bg-[#0F0F10] rounded-2xl flex flex-col py-10">
+        <x-container theme="black" class="w-full h-full bg-[#0F0F10]! flex flex-col py-10">
 
             {{-- Logo no topo --}}
-            <div class="flex justify-center ">
+            <div class="flex justify-center">
                 <img
                     src="{{ asset('logo_branca.png') }}"
                     alt=""
@@ -35,7 +35,7 @@
                 </div>
             @endforeach
 
-        </div>
+        </x-container>
 
     </main>
 @endsection

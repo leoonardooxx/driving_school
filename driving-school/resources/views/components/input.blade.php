@@ -72,7 +72,7 @@
             -translate-y-1/2
 
             text-base
-            {{ $errors->has($name) ? 'text-red-500 peer-focus:text-red-500' : 'text-(--fg) peer-focus:text-[#e85a31]' }}
+            {{ $errors->has($name) ? 'text-red-500 peer-focus:text-red-500' : 'text-(--fg) peer-focus:text-school' }}
             pointer-events-none
             transition-all
             duration-200

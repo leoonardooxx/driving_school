@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController
 {
@@ -34,8 +35,14 @@ class CategoryController
             'name' => ['required'],
             'code' => ['required'],
             'description' => ['required'],
-            'state' => ['nullable', 'boolean'],
+            'image' => ['sometimes', 'image', 'max:2048'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $validate['image'] = $request->file('image')->store('categories', 'public');
+        }
+
+        $validate['active'] = false;
 
         return Category::create($validate);
     }
@@ -61,15 +68,22 @@ class CategoryController
     public function update(Request $request, Category $category)
     {
         $validate = $request->validate([
-            'name' => ['required'],
-            'code' => ['required'],
-            'description' => ['required'],
-            'state' => ['nullable', 'boolean'],
+            'name' => ['sometimes', 'required'],
+            'code' => ['sometimes', 'required'],
+            'description' => ['sometimes', 'required'],
+            'image' => ['sometimes', 'image', 'max:2048'],
         ]);
 
-        $updatedCategory = $category->update($validate);
+        if ($request->hasFile('image')) {
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $validate['image'] = $request->file('image')->store('categories', 'public');
+        }
 
-        return $updatedCategory;
+        $category->update($validate);
+
+        return response()->json($category);
     }
     /**
      * Desativa/ativa categoria

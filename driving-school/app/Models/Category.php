@@ -11,5 +11,11 @@ class Category extends Model
         'code',
         'description',
         'active',
+        'image'
      ];
+
+     protected function casts(): array
+     {
+         return ['active' => 'boolean'];
+     }
 }
