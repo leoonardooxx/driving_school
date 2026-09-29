@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
@@ -65,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/categories', CategoriesController::class);
     Route::get('users/{user}/avatar', [UsersController::class, 'avatar'])->name('users.avatar');
     Route::resource('users', UsersController::class);
+    Route::resource('calendar', CalendarController::class);
     Route::resource('vehicles', VehiclesController::class);
     Route::post('/logout', function (Request $request) {
         Auth::logout();

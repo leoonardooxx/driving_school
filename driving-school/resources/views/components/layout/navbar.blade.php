@@ -1,32 +1,44 @@
-<div class="w-full p-1 flex">
-    <div id="left-side">
-        <img src="{{ asset('logo_auth_white.png') }}" alt="" width="2012" height="781" class="h-11 w-auto" />
-    </div>
-    <div id="center" class="mx-auto flex gap-2">
-        <x-layout.button theme="white" label="Dashboard" route="dashboard" />
-        <x-layout.button theme="white" label="Categories" icon="lucide-package" :dropdown="[
-            ['label' => 'See all', 'route' => 'categories.index', 'icon' => 'lucide-eye'],
-            ['label' => 'New category', 'route' => 'categories.create', 'icon' => 'lucide-plus'],
-        ]" />
-        <x-layout.button theme="white" label="Users" icon="lucide-user" :dropdown="[
-            ['label' => 'See all', 'route' => 'users.index', 'icon' => 'lucide-eye'],
-            ['label' => 'New user', 'route' => 'users.create', 'icon' => 'lucide-plus'],
-        ]" />
+@php
+    $nav = [
+        ['label' => 'Dashboard', 'icon' => 'lucide-layout-dashboard', 'route' => 'dashboard'],
+        ...collect([
+            ['Categories', 'categories', 'lucide-package', 'category'],
+            ['Users', 'users', 'lucide-user', 'user'],
+            ['Calendar', 'calendar', 'lucide-calendar', 'calendar'],
+            ['Payments', 'payments', 'lucide-credit-card', 'payment'],
+            ['Vehicles', 'vehicles', 'lucide-car', 'vehicle'],
+        ])->map(fn ($m) => [
+            'label' => $m[0],
+            'icon' => $m[2],
+            'route' => "$m[1].index",
+            'dropdown' => [
+                ['label' => 'See all', 'route' => "$m[1].index", 'icon' => 'lucide-eye'],
+                ['label' => "New $m[3]", 'route' => "$m[1].create", 'icon' => 'lucide-plus'],
+            ],
+        ]),
+    ];
+@endphp
 
-        <x-layout.button theme="white" label="Vehicles" icon="lucide-car" :dropdown="[
-            ['label' => 'See all', 'route' => 'vehicles.index', 'icon' => 'lucide-eye'],
-            ['label' => 'New vehicle', 'route' => 'vehicles.create', 'icon' => 'lucide-plus'],
-        ]" />
-        <x-layout.button theme="white" label="Payments" icon="lucide-credit-card" :dropdown="[
-            ['label' => 'See all', 'route' => 'vehicles.index', 'icon' => 'lucide-eye'],
-            ['label' => 'New payment', 'route' => 'vehicles.create', 'icon' => 'lucide-plus'],
-        ]" />
-        <x-layout.button theme="white" label="Lessons" icon="lucide-book-check" :dropdown="[
-            ['label' => 'See all', 'route' => 'vehicles.index', 'icon' => 'lucide-eye'],
-            ['label' => 'New lesson', 'route' => 'vehicles.create', 'icon' => 'lucide-plus'],
-        ]" />
+<div class="w-full p-1 flex gap-2" data-navbar>
+    <div id="left-side" class="shrink-0">
+        <img src="{{ asset('logo_auth_white.png') }}" alt="" class="h-11" />
     </div>
-    <div id="right-side" class="flex gap-2">
+    <div id="center" class="flex-1 min-w-0 flex justify-center gap-2" data-nav-center>
+        @foreach ($nav as $item)
+            <div class="shrink-0" data-nav-item
+                @if (request()->routeIs(str_contains($item['route'], '.') ? Str::beforeLast($item['route'], '.') . '.*' : $item['route'])) data-nav-active @endif>
+                <x-layout.button theme="white" :label="$item['label']" :icon="isset($item['dropdown']) ? $item['icon'] : null"
+                    :route="isset($item['dropdown']) ? null : $item['route']" :dropdown="$item['dropdown'] ?? []" />
+            </div>
+        @endforeach
+        <div class="shrink-0" data-nav-all>
+            <x-layout.button theme="white" label="All" icon="lucide-layout-grid" :highlight="false" :dropdown="array_map(
+                fn ($item) => ['label' => $item['label'], 'route' => $item['route'], 'icon' => $item['icon']],
+                $nav,
+            )" />
+        </div>
+    </div>
+    <div id="right-side" class="shrink-0 flex gap-2">
         <x-layout.button icon="lucide-settings" theme="white" aria-label="Definições" />
         <x-layout.button icon="lucide-bell" theme="white" aria-label="Notificações" />
         @if (Auth::user()->image)
