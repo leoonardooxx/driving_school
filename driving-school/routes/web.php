@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
@@ -63,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/categories', CategoriesController::class);
     Route::resource('users', UsersController::class);
+    Route::resource('calendar', CalendarController::class);
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();

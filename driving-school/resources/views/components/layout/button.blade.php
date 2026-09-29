@@ -7,6 +7,7 @@
     'color' => 'normal',
     'dropdown' => [],
     'disabled' => false,
+    'highlight' => true,
 ])
 
 @php
@@ -24,7 +25,7 @@
         fn ($r) => str_contains($r, '.') ? Str::beforeLast($r, '.') . '.*' : $r,
         array_filter([$route, ...array_column($dropdown, 'route')]),
     );
-    $active = $routes && request()->routeIs(...$routes);
+    $active = $highlight && $routes && request()->routeIs(...$routes);
     $dropdownId = 'dropdown-' . uniqid();
     $activeThemes = [
         'black' => 'bg-white text-black border-white',
@@ -72,7 +73,7 @@
     @if ($dropdown)
         <x-container :theme="$active ? ($theme === 'white' ? 'black' : 'white') : $theme" id="{{ $dropdownId }}" popover="auto" style="position-anchor: --{{ $dropdownId }}; position-area: bottom span-right;" @class(['inset-auto m-0 mt-2 p-1! rounded-2xl! text-sm min-w-44', $theme === 'white' ? 'bg-black! text-white! border-black!' : 'bg-white! text-black! border-white!' => $active])>
             @foreach ($dropdown as $item)
-                <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['route'])) aria-current="page" @endif class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl opacity-70 hover:opacity-100 hover:bg-current/5 aria-[current=page]:opacity-100 aria-[current=page]:font-medium">
+                <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}" @if (request()->routeIs($item['route'])) aria-current="page" @endif class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl opacity-70 hover:opacity-100 hover:bg-current/5 aria-[current=page]:opacity-100 aria-[current=page]:font-medium">
                     @isset($item['icon'])
                         <x-dynamic-component :component="$item['icon']" class="size-4" />
                     @endisset
