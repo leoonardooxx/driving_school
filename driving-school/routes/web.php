@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\VehiclesController;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -62,7 +63,9 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/categories', CategoriesController::class);
+    Route::get('users/{user}/avatar', [UsersController::class, 'avatar'])->name('users.avatar');
     Route::resource('users', UsersController::class);
+    Route::resource('vehicles', VehiclesController::class);
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -15,11 +16,18 @@ class UsersController extends Controller
     private function fieldsLabel()
     {
         return [
-            'name' => ['label' => 'Name'],
-            'last_name' => ['label' => 'Surname'],
-            'active' => ['label' => 'Active', 'component' => 'switch'],
-            'created_at' => ['label' => 'Created at'],
-            'updated_at' => ['label' => 'Updated at'],
+            'id' => ['label' => 'ID', 'show_on_table' => false],
+            'image_url' => ['label' => 'Image', 'component' => 'table.image', 'rounded' => true, 'show_on_table' => true],
+            'username' => ['label' => 'Username', 'show_on_table' => false],
+            'name' => ['label' => 'Name', 'show_on_table' => true],
+            'last_name' => ['label' => 'Surname', 'show_on_table' => true],
+            'nif' => ['label' => 'NIF', 'show_on_table' => false],
+            'profile' => ['label' => 'Profile', 'show_on_table' => false],
+            'email' => ['label' => 'Email', 'show_on_table' => false],
+            'email_verified_at' => ['label' => 'Email verified at', 'show_on_table' => false],
+            'active' => ['label' => 'Active', 'component' => 'switch', 'show_on_table' => true],
+            'created_at' => ['label' => 'Created at', 'show_on_table' => true],
+            'updated_at' => ['label' => 'Updated at', 'show_on_table' => true],
         ];
     }
     /**
@@ -45,8 +53,27 @@ class UsersController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create([...$request->validated(), 'active' => $request->boolean('active')]);
+        $data = [...$request->validated(), 'active' => $request->boolean('active')];
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('users', 'public');
+        }
+
+        User::create($data);
+
         return redirect()->route('users.index');
+    }
+
+    /**
+     * Serve the user's profile picture with long-lived browser caching.
+     */
+    public function avatar(User $user)
+    {
+        abort_unless($user->image && Storage::disk('public')->exists($user->image), 404);
+
+        return Storage::disk('public')->response($user->image, null, [
+            'Cache-Control' => 'private, max-age=31536000, immutable',
+        ]);
     }
 
     /**
@@ -68,9 +95,20 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $data['image'] = $request->file('image')->store('users', 'public');
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users.index');
     }
 
     /**

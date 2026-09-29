@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ForgetTableColumnsForGuests;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->encryptCookies(except: ['per_page']);
+        $middleware->encryptCookies(except: ['per_page', 'table_columns']);
+        $middleware->web(prepend: [ForgetTableColumnsForGuests::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 

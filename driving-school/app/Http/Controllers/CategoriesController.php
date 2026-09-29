@@ -15,12 +15,14 @@ class CategoriesController extends Controller
     private function fieldsLabel()
     {
         return [
-            'image' => ['label' => 'Image', 'component' => 'table.image'],
-            'code' => ['label' => 'Code'],
-            'description' => ['label' => 'Description'],
-            'active' => ['label' => 'Active', 'component' => 'switch'],
-            'created_at' => ['label' => 'Created at'],
-            'updated_at' => ['label' => 'Updated at'],
+            'id' => ['label' => 'ID', 'show_on_table' => false],
+            'image' => ['label' => 'Image', 'component' => 'table.image', 'show_on_table' => true],
+            'name' => ['label' => 'Name', 'show_on_table' => false],
+            'code' => ['label' => 'Code', 'show_on_table' => true],
+            'description' => ['label' => 'Description', 'show_on_table' => true],
+            'active' => ['label' => 'Active', 'component' => 'switch', 'show_on_table' => true],
+            'created_at' => ['label' => 'Created at', 'show_on_table' => true],
+            'updated_at' => ['label' => 'Updated at', 'show_on_table' => true],
         ];
     }
     /**

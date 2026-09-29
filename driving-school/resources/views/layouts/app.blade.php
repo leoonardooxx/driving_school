@@ -8,6 +8,9 @@
     <title>
         @yield('title', config('app.name', 'Laravel'))
     </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Merriweather:wght@400;500;600&display=block">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>

@@ -22,6 +22,7 @@ class UpdateUserRequest extends FormRequest
             'email' => ['sometimes', 'email', 'unique:users,email,' . $this->user->id],
             'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
             'active' => ['sometimes', 'boolean'],
+            'image' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }
