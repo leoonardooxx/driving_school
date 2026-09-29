@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -42,9 +43,10 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        User::create([...$request->validated(), 'active' => $request->boolean('active')]);
+        return redirect()->route('users.index');
     }
 
     /**
