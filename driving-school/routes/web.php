@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
-    return view('welcome');
+    return view('landingPage.index');
 });
 
 

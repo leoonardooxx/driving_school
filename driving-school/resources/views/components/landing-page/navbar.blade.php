@@ -1,15 +1,9 @@
 @props(
-[
-    'nav' => [],
-    'showAll' => true,
-    'loggedInOptions' => true
-]
+['nav' => []]
 )
 
 <div class="w-full p-1 flex gap-2" data-navbar>
-    <div id="left-side" @class([ 'shrink-0 flex gap-2' , 'flex-1 min-w-0'=>
-        !auth()->check(),
-        ])>
+    <div id="left-side" class="shrink-0">
         <img src="{{ asset('logo_auth_white.png') }}" alt="" class="h-11" />
     </div>
     <div id="center" class="flex-1 min-w-0 flex justify-center gap-2" data-nav-center>
@@ -21,23 +15,18 @@
                 :route="isset($item['dropdown']) ? null : $item['route']" :dropdown="$item['dropdown'] ?? []" />
         </div>
         @endforeach
-        @if($showAll)
         <div class="shrink-0" data-nav-all>
             <x-layout.button theme="white" label="All" icon="lucide-layout-grid" :highlight="false" :dropdown="array_map(
                 fn ($item) => ['label' => $item['label'], 'route' => $item['route'], 'icon' => $item['icon']],
                 $nav,
             )" />
         </div>
-        @endif
     </div>
-    <div id="right-side" @class([ 'shrink-0 flex gap-2' , 'flex-1 min-w-0'=>
-        !auth()->check(),
-        ])>
-        @if(auth()->check() && $loggedInOptions)
+    <div id="right-side" class="shrink-0 flex gap-2">
         <x-layout.button icon="lucide-settings" theme="white" aria-label="Definições" />
         <x-layout.button icon="lucide-bell" theme="white" aria-label="Notificações" />
-
-        @if (Auth::user()->image_url)
+        @if(auth()->check())
+        @if (!empty(Auth::user()->image_url) )
         <x-layout.button theme="white" aria-label="Menu do utilizador" color="school_color" popovertarget="user-menu"
             class="overflow-hidden cursor-pointer">
             <img src="{{ Auth::user()->image_url }}" alt="" class="size-full object-cover" />
@@ -62,6 +51,8 @@
             </form>
         </x-container>
         @endif
+
+
 
     </div>
 </div>
