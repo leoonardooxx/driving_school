@@ -26,13 +26,29 @@ class CategoriesController extends Controller
         ];
     }
     /**
+     * Layout of the create/edit form, also used by the details panel.
+     * 'beside' fields stack next to an avatar; see UsersController::formLayout().
+     */
+    private function formLayout()
+    {
+        return [
+            ['name' => 'image', 'label' => 'Image', 'type' => 'avatar', 'beside' => [
+                ['name' => 'name', 'label' => 'Name'],
+                ['name' => 'code', 'label' => 'Code'],
+            ]],
+            ['name' => 'description', 'label' => 'Description'],
+            ['name' => 'active', 'label' => 'Active', 'type' => 'switch', 'value' => true],
+        ];
+    }
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $header = self::fieldsLabel();
+        $form = self::formLayout();
         $categories = self::getAllCategories();
-        return view('categories.index', ['header' => $header, 'categories' => $categories]);
+        return view('categories.index', ['header' => $header, 'form' => $form, 'categories' => $categories]);
     }
 
     /**
@@ -55,6 +71,8 @@ class CategoriesController extends Controller
             'active' => 'boolean',
             'image' => 'nullable|image|max:2048',
         ]);
+        // An unchecked switch sends nothing, so read it explicitly.
+        $data['active'] = $request->boolean('active');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('categories', 'public');
@@ -93,6 +111,8 @@ class CategoriesController extends Controller
             'active' => 'boolean',
             'image' => 'nullable|image|max:2048',
         ]);
+        // An unchecked switch sends nothing, so read it explicitly.
+        $data['active'] = $request->boolean('active');
 
         if ($request->hasFile('image')) {
             if ($category->image) {

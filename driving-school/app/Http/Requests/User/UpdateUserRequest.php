@@ -20,7 +20,7 @@ class UpdateUserRequest extends FormRequest
             'nif' => ['sometimes', 'string', 'unique:users,nif,' . $this->user->id],
             'profile' => ['sometimes', 'in:admin,student,instructor'],
             'email' => ['sometimes', 'email', 'unique:users,email,' . $this->user->id],
-            'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'active' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'image', 'max:2048'],
         ];

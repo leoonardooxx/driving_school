@@ -2,6 +2,8 @@
     'header' => [],
     'body' => [],
     'table' => null,
+    'selectable' => false,
+    'icon' => null,
 ])
 
 @php
@@ -14,6 +16,8 @@
         $header[$name]['visible'] = (bool) ($preferences[$name] ?? $column['show_on_table'] ?? true);
     }
     $columnsId = 'columns-' . uniqid();
+    // Empty state uses the current page's navbar icon.
+    $icon ??= collect(config('navigation.resources'))->first(fn ($page) => request()->routeIs("$page[1].*"))[2] ?? 'lucide-package';
 @endphp
 
 {{--
@@ -52,7 +56,7 @@
         </thead>
         <tbody>
             @forelse ($body as $model)
-                <tr class="border-b border-current/10 last:border-0">
+                <tr @class(['border-b border-current/10 last:border-0 hover:bg-gray-50', 'cursor-pointer data-selected:bg-gray-100' => $selectable])>
                     @foreach ($header as $name => $column)
                         @php($value = data_get($model, $name))
                         <td data-column="{{ $name }}" @if (! $column['visible']) hidden @endif class="px-3 py-5 whitespace-nowrap">
@@ -67,28 +71,48 @@
                             @endif
                         </td>
                     @endforeach
-
+                    <td></td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="{{ count($header) + 1 }}" class="px-3 py-8 text-center opacity-50">Sem resultados.</td>
+                    <td colspan="{{ count($header) + 1 }}" class="px-3 py-12">
+                        <div class="flex items-center justify-center gap-4 opacity-50">
+                            <x-dynamic-component :component="$icon" class="size-20 shrink-0" />
+                            <div>
+                                <div class="text-3xl font-semibold">Not Found</div>
+                                <div class="text-lg font-medium opacity-80">Try again or create one!</div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             @endforelse
         </tbody>
     </table>
     <script>
-        ((root) => root.addEventListener('change', (event) => {
-            const column = event.target.dataset.columnToggle;
-            if (column === undefined) return;
-            root.querySelectorAll(`[data-column="${CSS.escape(column)}"]`).forEach((cell) => cell.hidden = !event.target.checked);
-            let preferences = {};
-            try {
-                const match = document.cookie.match(/(?:^|; )table_columns=([^;]*)/);
-                preferences = match ? JSON.parse(decodeURIComponent(match[1])) : {};
-            } catch {}
-            (preferences[root.dataset.table] ??= {})[column] = event.target.checked;
-            document.cookie = `table_columns=${encodeURIComponent(JSON.stringify(preferences))}; path=/; max-age=31536000; samesite=lax`;
-        }))(document.currentScript.parentElement);
+        ((root) => {
+            @if ($selectable)
+            // Clicking a row marks it as selected and lets the page show its details.
+            root.addEventListener('click', (event) => {
+                const row = event.target.closest('tbody tr');
+                if (!row?.querySelector('td[data-column]')) return;
+                root.querySelectorAll('tr[data-selected]').forEach((selected) => selected.removeAttribute('data-selected'));
+                row.toggleAttribute('data-selected', true);
+                root.dispatchEvent(new CustomEvent('row-select', { bubbles: true, detail: { row } }));
+            });
+            @endif
+            root.addEventListener('change', (event) => {
+                const column = event.target.dataset.columnToggle;
+                if (column === undefined) return;
+                root.querySelectorAll(`[data-column="${CSS.escape(column)}"]`).forEach((cell) => cell.hidden = !event.target.checked);
+                let preferences = {};
+                try {
+                    const match = document.cookie.match(/(?:^|; )table_columns=([^;]*)/);
+                    preferences = match ? JSON.parse(decodeURIComponent(match[1])) : {};
+                } catch {}
+                (preferences[root.dataset.table] ??= {})[column] = event.target.checked;
+                document.cookie = `table_columns=${encodeURIComponent(JSON.stringify(preferences))}; path=/; max-age=31536000; samesite=lax`;
+            });
+        })(document.currentScript.parentElement);
     </script>
 
 </div>

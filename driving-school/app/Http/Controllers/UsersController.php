@@ -31,13 +31,34 @@ class UsersController extends Controller
         ];
     }
     /**
+     * Layout of the create/edit form, also used by the details panel.
+     * 'column' is the table column the value is read from when it differs from 'name';
+     * 'beside' fields stack next to an avatar; 'create_only' fields are hidden while editing.
+     */
+    private function formLayout()
+    {
+        return [
+            ['name' => 'image', 'label' => 'Image', 'type' => 'avatar', 'column' => 'image_url', 'beside' => [
+                ['name' => 'name', 'label' => 'Name'],
+                ['name' => 'last_name', 'label' => 'Surname'],
+            ]],
+            ['name' => 'email', 'label' => 'Email', 'type' => 'email'],
+            ['name' => 'nif', 'label' => 'NIF'],
+            ['name' => 'password', 'label' => 'Password', 'type' => 'password', 'create_only' => true],
+            ['name' => 'password_confirmation', 'label' => 'Confirm password', 'type' => 'password', 'create_only' => true],
+            ['name' => 'profile', 'label' => 'Profile', 'type' => 'select', 'value' => 'student', 'options' => ['student' => 'Student', 'instructor' => 'Instructor', 'admin' => 'Admin']],
+            ['name' => 'active', 'label' => 'Active', 'type' => 'switch', 'value' => true],
+        ];
+    }
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $header = self::fieldsLabel();
+        $form = self::formLayout();
         $users = self::getAllUsers();
-        return view('users.index', ['header' => $header, 'users' => $users]);
+        return view('users.index', ['header' => $header, 'form' => $form, 'users' => $users]);
     }
 
     /**
@@ -97,7 +118,8 @@ class UsersController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data = $request->validated();
+        // A blank password on the edit form keeps the current one.
+        $data = [...array_filter($request->validated(), fn ($value) => $value !== null), 'active' => $request->boolean('active')];
 
         if ($request->hasFile('image')) {
             if ($user->image) {

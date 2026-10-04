@@ -1,13 +1,7 @@
 @php
     $nav = [
         ['label' => 'Dashboard', 'icon' => 'lucide-layout-dashboard', 'route' => 'dashboard'],
-        ...collect([
-            ['Categories', 'categories', 'lucide-package', 'category'],
-            ['Users', 'users', 'lucide-user', 'user'],
-            ['Calendar', 'calendar', 'lucide-calendar', 'calendar'],
-            ['Payments', 'payments', 'lucide-credit-card', 'payment'],
-            ['Vehicles', 'vehicles', 'lucide-car', 'vehicle'],
-        ])->map(fn ($m) => [
+        ...collect(config('navigation.resources'))->map(fn ($m) => [
             'label' => $m[0],
             'icon' => $m[2],
             'route' => "$m[1].index",

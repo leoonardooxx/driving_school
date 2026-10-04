@@ -1,19 +1,5 @@
 @extends('layouts.auth')
 
 @section('content')
-<div class="flex flex-col gap-3">
-    <div class="flex justify-between items-center">
-        <div class="text-[24px]">
-            Categories
-        </div>
-            <x-layout.button color="school_color" theme="white" icon="lucide-plus" label="Add an category"/>
-
-    </div>
-    <x-container theme="white">
-        <x-table :header="$header" :body="$categories"/>
-    </x-container>
-    {{ $categories->links() }}
-</div>
-
-
+<x-resource-page title="Categories" route="categories" :header="$header" :body="$categories" :form="$form" create-title="Add a category" edit-title="Edit category" details-title="Category details" />
 @endsection

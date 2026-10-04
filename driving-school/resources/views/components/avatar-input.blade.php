@@ -1,4 +1,4 @@
-﻿@props([
+@props([
     'name' => 'image',
     'value' => null,
     'label' => 'Profile picture',
