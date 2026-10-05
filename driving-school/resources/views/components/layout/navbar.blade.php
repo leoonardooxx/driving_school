@@ -52,6 +52,11 @@
             class="inset-auto top-16 right-4 m-0 p-1! rounded-2xl! text-sm">
             <div class="px-2.5 py-1.5 font-medium">{{ Auth::user()->name }} {{ Auth::user()->last_name }}</div>
             <div class="mx-1 my-1 border-t border-current/10"></div>
+            <a href="{{ route('profile.index') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif
+                class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl opacity-70 hover:opacity-100 hover:bg-current/5 aria-[current=page]:opacity-100 aria-[current=page]:font-medium">
+                <x-lucide-user class="size-4" />
+                Perfil
+            </a>
             <form method="POST" action="{{ route('auth.logout') }}">
                 @csrf
                 <button type="submit"

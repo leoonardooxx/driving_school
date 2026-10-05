@@ -2,6 +2,7 @@
     'type' => 'text',
     'label' => 'Example',
     'name' => 'example',
+    'value' => null,
     'theme' => 'dark',
 ])
 
@@ -17,7 +18,7 @@
         name="{{ $name }}"
         id="{{ $name }}"
         placeholder=" "
-        @if($type !== 'password') value="{{ old($name) }}" @endif
+        @if($type !== 'password') value="{{ old($name, $value) }}" @endif
         readonly
         onpointerdown="this.readOnly = false"
         onfocus="this.readOnly = false"
